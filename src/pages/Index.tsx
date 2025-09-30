@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Github, Mail, Phone, Linkedin } from "lucide-react";
-import heroQuote from "@/assets/hero-quote.png";
+import { Github, Mail, Phone, Linkedin, Check } from "lucide-react";
+import emailjs from '@emailjs/browser';
+const heroImage = "https://i.postimg.cc/9MnFm7F3/3.jpg";
 import messxPreview from "@/assets/messx-preview.png";
 import estorePreview from "@/assets/estore-preview.png";
 const Index = () => {
@@ -15,24 +16,59 @@ const Index = () => {
     message: "",
     honeypot: "" // spam prevention
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
   useEffect(() => {
-    // Intersection Observer for reveal animations
+    // Optimized Intersection Observer with requestAnimationFrame
+    let animationFrameId: number;
+    
     const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-        }
+      // Use requestAnimationFrame to batch DOM updates
+      animationFrameId = requestAnimationFrame(() => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+          }
+        });
       });
     }, {
-      threshold: 0.15
+      threshold: 0.1,
+      rootMargin: '0px 0px -10% 0px' // Trigger slightly before element comes into view
     });
+
+    // Use passive event listeners for better scroll performance
     const reveals = document.querySelectorAll(".reveal, .stagger-children");
     reveals.forEach(el => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
 
+    // Add passive event listeners for better scroll performance
+    const handleWheel = (e: Event) => {
+      // This empty handler enables passive event listeners
+    };
+    
+    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('touchmove', handleWheel, { passive: true });
+
+    // Cleanup function
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      observer.disconnect();
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchmove', handleWheel);
+    };
+  }, []);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
     // Honeypot spam check
     if (formData.honeypot) return;
 
@@ -49,59 +85,130 @@ const Index = () => {
       return;
     }
 
-    // TODO: Connect to EmailJS, Netlify Forms, or backend endpoint
-    console.log("Form submission:", formData);
-    toast.success("Message sent successfully!", {
-      description: "I'll get back to you soon."
-    });
+    setIsSubmitting(true);
 
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-      honeypot: ""
-    });
+    try {
+      await emailjs.send(
+        'service_cc3981c', // Service ID
+        'template_ja0xiio', // Template ID
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        },
+        'BwLVREdQZ8dnGx6g8' // Public Key
+      );
+
+      // Show success notification
+      setShowSuccess(true);
+      
+      // Hide success notification after 5 seconds
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 5000);
+
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+        honeypot: ""
+      });
+
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      let errorMessage = "Failed to send message. Please try again later.";
+      
+      if (error instanceof Error) {
+        if ('status' in error) {
+          // Handle HTTP status errors
+          switch (error.status) {
+            case 400:
+              errorMessage = "Invalid form data. Please check your inputs.";
+              break;
+            case 401:
+              errorMessage = "Authentication failed. Please check your EmailJS configuration.";
+              break;
+            case 429:
+              errorMessage = "Too many requests. Please try again later.";
+              break;
+          }
+        } else if (error.message.includes('Network Error')) {
+          errorMessage = "Network error. Please check your internet connection.";
+        }
+      }
+      
+      console.error("Detailed error:", error);
+      setErrorMessage(errorMessage);
+      setShowError(true);
+      
+      // Hide error after 5 seconds
+      setTimeout(() => {
+        setShowError(false);
+      }, 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
-  return <div className="snap-container">
+  return (
+    <div className="snap-container relative">
+      {/* Success Notification */}
+      {showSuccess && (
+        <div className="fixed bottom-8 right-8 bg-[#D1B399] text-[#550000] px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 z-50 animate-fade-in-up">
+          <Check className="w-6 h-6 text-[#550000]" />
+          <span className="font-medium">Message sent successfully!</span>
+        </div>
+      )}
+      {showError && (
+        <div className="fixed bottom-8 right-8 bg-[#FEE2E2] text-[#991B1B] px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 z-50 animate-fade-in-up">
+          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+          </svg>
+          <span className="font-medium">{errorMessage}</span>
+        </div>
+      )}
       {/* Hero Section - Full Screen */}
-      <section id="hero" className="snap-section relative flex items-center justify-center overflow-hidden p-0" aria-label="Hero section">
-        <img src={heroQuote} alt="Steve Jobs inspirational quote: Always keep the drive to learn, explore and achieve more" className="w-full h-full object-cover" />
+      <section id="hero" className="snap-section relative w-full px-8 pt-8 md:px-16" aria-label="Hero section">
+        <div className="relative w-full h-[120vh] overflow-hidden rounded-2xl shadow-xl">
+          <img 
+            src={heroImage} 
+            alt="Steve Jobs inspirational quote: Always keep the drive to learn, explore and achieve more"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 rounded-2xl" />
+        </div>
       </section>
 
       {/* About Section */}
       <section id="about" className="snap-section flex items-center justify-center py-24 px-4" aria-label="About me">
-        <div className="card w-full max-w-4xl bg-card text-card-foreground p-10 rounded-[var(--radius-lg)] shadow-2xl reveal hover-enlarge">
-          <div className="stagger-children space-y-6">
-            <div className="flex justify-between items-start">
+        <div className="w-full max-w-6xl bg-card text-card-foreground p-10 rounded-2xl shadow-2xl reveal hover-enlarge">
+          <div className="relative">
+            <div className="space-y-6 pb-16">
               <h2 className="text-5xl font-bold text-primary">About Me</h2>
+              <div>
+                <p className="text-3xl font-semibold text-primary">V A Rishivaradha</p>
+                <p className="text-lg text-primary/80 mt-2">
+                  Sri Venkateshwara College of Engineering — Computer Science & Engineering
+                </p>
+                <p className="text-lg leading-relaxed text-primary/90 mt-4">
+                  I am a passionate student with a strong interest in technology and problem-solving. 
+                  My core strength lies in Java programming, where I enjoy building logical solutions and 
+                  applying structured thinking to real-world problems. Alongside my programming skills, 
+                  I am also skilled in designing and developing smooth, user-friendly, and interactive websites. 
+                  I focus on creating efficient solutions through low-code and no-code platforms, enabling faster
+                  development and deployment.
+                </p>
+              </div>
+            </div>
+            <div className="absolute bottom-0 right-0">
               <Button variant="outline" className="border-2 border-primary bg-primary text-foreground" asChild>
                 <a href="https://drive.google.com/file/d/1_ShMlxE_WQ-TgJBrggSRfjxa4Ay1uJW1/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
                   Resume
                 </a>
               </Button>
             </div>
-            <p className="text-3xl font-semibold text-primary">V A Rishivaradha</p>
-            <p className="text-lg text-primary/80">
-              Sri Venkateshwara College of Engineering — Computer Science & Engineering
-            </p>
-            <p className="text-lg leading-relaxed text-primary/90">
-              I am a passionate student with a strong interest in technology and problem-solving. 
-              My core strength lies in Java programming, where I enjoy building logical solutions and 
-              applying structured thinking to real-world problems. Alongside my programming skills, 
-              I am also skilled in designing and developing smooth, user-friendly, and interactive websites. 
-              I focus on creating efficient solutions through low-code and no-code platforms, enabling faster 
-              development without compromising on functionality or design. With a blend of coding expertise 
-              and creative website development, I strive to deliver impactful digital experiences that are 
-              both practical and visually engaging.
-            </p>
           </div>
         </div>
       </section>
@@ -113,7 +220,7 @@ const Index = () => {
           
           <div className="grid md:grid-cols-2 gap-8">
             {/* MessX Project */}
-            <article className="card bg-card text-card-foreground rounded-[var(--radius-lg)] overflow-hidden shadow-2xl reveal hover-enlarge">
+            <article className="bg-card text-card-foreground rounded-[var(--radius-md)] overflow-hidden shadow-2xl reveal hover-enlarge" style={{ transition: 'transform 0.3s cubic-bezier(0.2, 0.9, 0.25, 1), box-shadow 0.3s ease' }}>
               <div className="project-media aspect-[3/2] border-b-2 border-primary/20 overflow-hidden">
                 <img src={messxPreview} alt="MessX real-time chat application preview" className="w-full h-full object-cover" />
               </div>
@@ -136,7 +243,7 @@ const Index = () => {
             </article>
 
             {/* E-Store Project */}
-            <article className="card bg-card text-card-foreground rounded-[var(--radius-lg)] overflow-hidden shadow-2xl reveal hover-enlarge">
+            <article className="bg-card text-card-foreground rounded-[var(--radius-md)] overflow-hidden shadow-2xl reveal hover-enlarge" style={{ transition: 'transform 0.3s cubic-bezier(0.2, 0.9, 0.25, 1), box-shadow 0.3s ease' }}>
               <div className="project-media aspect-[3/2] border-b-2 border-primary/20 overflow-hidden">
                 <img src={estorePreview} alt="E-Store e-commerce platform preview" className="w-full h-full object-cover" />
               </div>
@@ -241,8 +348,12 @@ const Index = () => {
                 display: "none"
               }} tabIndex={-1} autoComplete="off" />
 
-                <Button type="submit" className="w-full bg-primary text-card hover:bg-primary/90 transition-all duration-200 py-6 text-lg">
-                  Send Message
+                <Button 
+                  type="submit" 
+                  className="w-full bg-primary text-card hover:bg-primary/90 transition-all duration-200 py-6 text-lg"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </Button>
               </form>
             </div>
@@ -254,6 +365,8 @@ const Index = () => {
       <footer className="py-8 text-center text-foreground/60 text-sm">
         <p>© 2025 V A Rishivaradha. Designed with attention to detail.</p>
       </footer>
-    </div>;
+    </div>
+  );
 };
+
 export default Index;

@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.3s ease-out forwards;
+}
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
@@ -77,8 +92,34 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  /* Optimize scrolling performance */
   html {
     scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Optimize scroll container */
+  .snap-container {
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: y mandatory;
+    overflow-y: auto;
+    height: 100vh;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  
+  .snap-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+  
+  /* Optimize section rendering */
+  .snap-section {
+    scroll-snap-align: start;
+    min-height: 100vh;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
 
   body {
@@ -88,16 +129,27 @@ All colors MUST be HSL.
   }
 }
 
-/* Scroll snap container */
+/* Optimized scroll snap container */
 .snap-container {
   scroll-snap-type: y mandatory;
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 100vh;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.snap-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 
 .snap-section {
   scroll-snap-align: start;
   min-height: 100vh;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 /* Reveal animation classes */
