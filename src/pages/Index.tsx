@@ -157,7 +157,7 @@ const Index = () => {
                 <div className="pt-4">
                   <Button
                     variant="outline"
-                    className="group border-2 border-primary text-primary hover:bg-primary hover:text-card transition-all duration-200"
+                    className="group border-2 border-primary bg-primary text-foreground hover:bg-primary/90 transition-all duration-200"
                     asChild
                   >
                     <a 
@@ -193,7 +193,7 @@ const Index = () => {
                 <div className="pt-4">
                   <Button
                     variant="outline"
-                    className="group border-2 border-primary text-primary hover:bg-primary hover:text-card transition-all duration-200"
+                    className="group border-2 border-primary bg-primary text-foreground hover:bg-primary/90 transition-all duration-200"
                     asChild
                   >
                     <a 
