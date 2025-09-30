@@ -128,6 +128,25 @@ All colors MUST be HSL.
   outline-offset: 2px;
 }
 
+/* Custom Figma-style cursors */
+body {
+  cursor: url('/cursor-arrow-maroon.svg') 0 0, auto;
+}
+
+a, button, .clickable, [role="button"] {
+  cursor: url('/cursor-hand-maroon.svg') 8 0, pointer;
+}
+
+/* Hover enlarge effect for div elements */
+.hover-enlarge {
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.25, 1);
+  will-change: transform;
+}
+
+.hover-enlarge:hover {
+  transform: scale(1.02);
+}
+
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -140,5 +159,17 @@ All colors MUST be HSL.
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  body {
+    cursor: auto;
+  }
+
+  a, button, .clickable, [role="button"] {
+    cursor: pointer;
+  }
+
+  .hover-enlarge:hover {
+    transform: none;
   }
 }

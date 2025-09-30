@@ -71,18 +71,23 @@ const Index = () => {
     }));
   };
   return <div className="snap-container">
-      {/* Hero Section - LCP placeholder */}
-      <section id="hero" className="snap-section relative flex items-center justify-center overflow-hidden" aria-label="Hero section">
-        <div className="w-full max-w-5xl mx-auto px-8">
-          <img src={heroQuote} alt="Steve Jobs inspirational quote: Always keep the drive to learn, explore and achieve more" className="reveal relative aspect-video rounded-3xl w-full object-cover shadow-2xl" />
-        </div>
+      {/* Hero Section - Full Screen */}
+      <section id="hero" className="snap-section relative flex items-center justify-center overflow-hidden p-0" aria-label="Hero section">
+        <img src={heroQuote} alt="Steve Jobs inspirational quote: Always keep the drive to learn, explore and achieve more" className="w-full h-full object-cover" />
       </section>
 
       {/* About Section */}
       <section id="about" className="snap-section flex items-center justify-center py-24 px-4" aria-label="About me">
-        <div className="card w-full max-w-4xl bg-card text-card-foreground p-10 rounded-[var(--radius-lg)] shadow-2xl reveal">
+        <div className="card w-full max-w-4xl bg-card text-card-foreground p-10 rounded-[var(--radius-lg)] shadow-2xl reveal hover-enlarge">
           <div className="stagger-children space-y-6">
-            <h2 className="text-5xl font-bold text-primary">About Me</h2>
+            <div className="flex justify-between items-start">
+              <h2 className="text-5xl font-bold text-primary">About Me</h2>
+              <Button variant="outline" className="border-2 border-primary bg-primary text-foreground" asChild>
+                <a href="https://drive.google.com/file/d/1_ShMlxE_WQ-TgJBrggSRfjxa4Ay1uJW1/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
+                  Resume
+                </a>
+              </Button>
+            </div>
             <p className="text-3xl font-semibold text-primary">V A Rishivaradha</p>
             <p className="text-lg text-primary/80">
               Sri Venkateshwara College of Engineering — Computer Science & Engineering
@@ -108,7 +113,7 @@ const Index = () => {
           
           <div className="grid md:grid-cols-2 gap-8">
             {/* MessX Project */}
-            <article className="card bg-card text-card-foreground rounded-[var(--radius-lg)] overflow-hidden shadow-2xl reveal transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
+            <article className="card bg-card text-card-foreground rounded-[var(--radius-lg)] overflow-hidden shadow-2xl reveal hover-enlarge">
               <div className="project-media aspect-[3/2] border-b-2 border-primary/20 overflow-hidden">
                 <img src={messxPreview} alt="MessX real-time chat application preview" className="w-full h-full object-cover" />
               </div>
@@ -120,7 +125,7 @@ const Index = () => {
                   Instant sign-in, dynamic contacts, presence detection.
                 </p>
                 <div className="pt-4">
-                  <Button variant="outline" className="group border-2 border-primary bg-primary text-foreground hover:bg-primary/90 transition-all duration-200" asChild>
+                  <Button variant="outline" className="border-2 border-primary bg-primary text-foreground" asChild>
                     <a href="https://github.com/Rishivaradha/MessX.git" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
                       <Github className="w-5 h-5" />
                       View on GitHub
@@ -131,7 +136,7 @@ const Index = () => {
             </article>
 
             {/* E-Store Project */}
-            <article className="card bg-card text-card-foreground rounded-[var(--radius-lg)] overflow-hidden shadow-2xl reveal transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
+            <article className="card bg-card text-card-foreground rounded-[var(--radius-lg)] overflow-hidden shadow-2xl reveal hover-enlarge">
               <div className="project-media aspect-[3/2] border-b-2 border-primary/20 overflow-hidden">
                 <img src={estorePreview} alt="E-Store e-commerce platform preview" className="w-full h-full object-cover" />
               </div>
@@ -142,7 +147,7 @@ const Index = () => {
                   Responsive e-commerce demo prototype with product previews, cart flow and checkout UI.
                 </p>
                 <div className="pt-4">
-                  <Button variant="outline" className="group border-2 border-primary bg-primary text-foreground hover:bg-primary/90 transition-all duration-200" asChild>
+                  <Button variant="outline" className="border-2 border-primary bg-primary text-foreground" asChild>
                     <a href="https://github.com/Rishivaradha/E-STORE.git" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
                       <Github className="w-5 h-5" />
                       View on GitHub
@@ -157,12 +162,12 @@ const Index = () => {
 
       {/* Contact Section */}
       <section id="contact" className="snap-section flex items-center justify-center py-24 px-4" aria-label="Contact">
-        <div className="card w-full max-w-6xl bg-card text-card-foreground p-10 rounded-[var(--radius-lg)] shadow-2xl reveal">
+        <div className="card w-full max-w-6xl bg-card text-card-foreground p-10 rounded-[var(--radius-lg)] shadow-2xl reveal hover-enlarge">
           <h2 className="text-5xl font-bold text-primary mb-12 text-center">Get In Touch</h2>
           
           <div className="grid md:grid-cols-2 gap-8">
             {/* Contact Info Box */}
-            <div className="contact-info border-2 border-primary rounded-[var(--radius-md)] p-8 space-y-6">
+            <div className="contact-info border-2 border-primary rounded-[var(--radius-md)] p-8 space-y-6 hover-enlarge">
               <h3 className="text-2xl font-semibold text-primary mb-6">Contact Information</h3>
               
               <div className="space-y-4">
@@ -170,8 +175,7 @@ const Index = () => {
                   <Mail className="w-5 h-5 text-primary" />
                   <div>
                     <p className="text-sm text-primary/60">Email</p>
-                    {/* REPLACE {EMAIL} with your actual email */}
-                    <a href="mailto:your.email@example.com" className="text-primary hover:underline">rishiva2004@gmail.com</a>
+                    <a href="mailto:rishiva2004@gmail.com" className="text-primary hover:underline">rishiva2004@gmail.com</a>
                   </div>
                 </div>
 
@@ -179,8 +183,7 @@ const Index = () => {
                   <Phone className="w-5 h-5 text-primary" />
                   <div>
                     <p className="text-sm text-primary/60">Phone</p>
-                    {/* REPLACE {PHONE} with your actual phone number */}
-                    <a href="tel:+1234567890" className="text-primary hover:underline">9940351596</a>
+                    <a href="tel:+919940351596" className="text-primary hover:underline">9940351596</a>
                   </div>
                 </div>
 
@@ -188,15 +191,22 @@ const Index = () => {
                   <Linkedin className="w-5 h-5 text-primary" />
                   <div>
                     <p className="text-sm text-primary/60">LinkedIn</p>
-                    {/* REPLACE {LINKEDIN_URL} with your actual LinkedIn profile */}
-                    <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">https://www.linkedin.com/in/rishivaradha07/</a>
+                    <a href="https://www.linkedin.com/in/rishivaradha07/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">linkedin.com/in/rishivaradha07</a>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Github className="w-5 h-5 text-primary" />
+                  <div>
+                    <p className="text-sm text-primary/60">GitHub</p>
+                    <a href="https://github.com/Rishivaradha" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">github.com/Rishivaradha</a>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Contact Form Box */}
-            <div className="contact-form border-2 border-primary rounded-[var(--radius-md)] p-8">
+            <div className="contact-form border-2 border-primary rounded-[var(--radius-md)] p-8 hover-enlarge">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-primary mb-2">
