@@ -7,7 +7,6 @@ import { Github, Mail, Phone, Linkedin } from "lucide-react";
 import heroQuote from "@/assets/hero-quote.png";
 import messxPreview from "@/assets/messx-preview.png";
 import estorePreview from "@/assets/estore-preview.png";
-
 const Index = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -16,29 +15,24 @@ const Index = () => {
     message: "",
     honeypot: "" // spam prevention
   });
-
   useEffect(() => {
     // Intersection Observer for reveal animations
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+        }
+      });
+    }, {
+      threshold: 0.15
+    });
     const reveals = document.querySelectorAll(".reveal, .stagger-children");
-    reveals.forEach((el) => observer.observe(el));
-
+    reveals.forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, []);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Honeypot spam check
     if (formData.honeypot) return;
 
@@ -57,7 +51,6 @@ const Index = () => {
 
     // TODO: Connect to EmailJS, Netlify Forms, or backend endpoint
     console.log("Form submission:", formData);
-    
     toast.success("Message sent successfully!", {
       description: "I'll get back to you soon."
     });
@@ -71,37 +64,22 @@ const Index = () => {
       honeypot: ""
     });
   };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
     }));
   };
-
-  return (
-    <div className="snap-container">
+  return <div className="snap-container">
       {/* Hero Section - LCP placeholder */}
-      <section 
-        id="hero" 
-        className="snap-section relative flex items-center justify-center overflow-hidden"
-        aria-label="Hero section"
-      >
+      <section id="hero" className="snap-section relative flex items-center justify-center overflow-hidden" aria-label="Hero section">
         <div className="w-full max-w-5xl mx-auto px-8">
-          <img 
-            src={heroQuote} 
-            alt="Steve Jobs inspirational quote: Always keep the drive to learn, explore and achieve more" 
-            className="reveal relative aspect-video rounded-3xl w-full object-cover shadow-2xl"
-          />
+          <img src={heroQuote} alt="Steve Jobs inspirational quote: Always keep the drive to learn, explore and achieve more" className="reveal relative aspect-video rounded-3xl w-full object-cover shadow-2xl" />
         </div>
       </section>
 
       {/* About Section */}
-      <section 
-        id="about" 
-        className="snap-section flex items-center justify-center py-24 px-4"
-        aria-label="About me"
-      >
+      <section id="about" className="snap-section flex items-center justify-center py-24 px-4" aria-label="About me">
         <div className="card w-full max-w-4xl bg-card text-card-foreground p-10 rounded-[var(--radius-lg)] shadow-2xl reveal">
           <div className="stagger-children space-y-6">
             <h2 className="text-5xl font-bold text-primary">About Me</h2>
@@ -124,11 +102,7 @@ const Index = () => {
       </section>
 
       {/* Projects Section */}
-      <section 
-        id="projects" 
-        className="snap-section flex items-center justify-center py-24 px-4"
-        aria-label="Projects"
-      >
+      <section id="projects" className="snap-section flex items-center justify-center py-24 px-4" aria-label="Projects">
         <div className="w-full max-w-6xl">
           <h2 className="text-5xl font-bold text-center mb-16 text-foreground reveal">Projects</h2>
           
@@ -136,11 +110,7 @@ const Index = () => {
             {/* MessX Project */}
             <article className="card bg-card text-card-foreground rounded-[var(--radius-lg)] overflow-hidden shadow-2xl reveal transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
               <div className="project-media aspect-[3/2] border-b-2 border-primary/20 overflow-hidden">
-                <img 
-                  src={messxPreview} 
-                  alt="MessX real-time chat application preview" 
-                  className="w-full h-full object-cover"
-                />
+                <img src={messxPreview} alt="MessX real-time chat application preview" className="w-full h-full object-cover" />
               </div>
               
               <div className="p-8 space-y-4">
@@ -150,17 +120,8 @@ const Index = () => {
                   Instant sign-in, dynamic contacts, presence detection.
                 </p>
                 <div className="pt-4">
-                  <Button
-                    variant="outline"
-                    className="group border-2 border-primary bg-primary text-foreground hover:bg-primary/90 transition-all duration-200"
-                    asChild
-                  >
-                    <a 
-                      href="https://github.com/Rishivaradha/MessX.git" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2"
-                    >
+                  <Button variant="outline" className="group border-2 border-primary bg-primary text-foreground hover:bg-primary/90 transition-all duration-200" asChild>
+                    <a href="https://github.com/Rishivaradha/MessX.git" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
                       <Github className="w-5 h-5" />
                       View on GitHub
                     </a>
@@ -172,11 +133,7 @@ const Index = () => {
             {/* E-Store Project */}
             <article className="card bg-card text-card-foreground rounded-[var(--radius-lg)] overflow-hidden shadow-2xl reveal transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
               <div className="project-media aspect-[3/2] border-b-2 border-primary/20 overflow-hidden">
-                <img 
-                  src={estorePreview} 
-                  alt="E-Store e-commerce platform preview" 
-                  className="w-full h-full object-cover"
-                />
+                <img src={estorePreview} alt="E-Store e-commerce platform preview" className="w-full h-full object-cover" />
               </div>
               
               <div className="p-8 space-y-4">
@@ -185,17 +142,8 @@ const Index = () => {
                   Responsive e-commerce demo prototype with product previews, cart flow and checkout UI.
                 </p>
                 <div className="pt-4">
-                  <Button
-                    variant="outline"
-                    className="group border-2 border-primary bg-primary text-foreground hover:bg-primary/90 transition-all duration-200"
-                    asChild
-                  >
-                    <a 
-                      href="https://github.com/Rishivaradha/E-STORE.git" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2"
-                    >
+                  <Button variant="outline" className="group border-2 border-primary bg-primary text-foreground hover:bg-primary/90 transition-all duration-200" asChild>
+                    <a href="https://github.com/Rishivaradha/E-STORE.git" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
                       <Github className="w-5 h-5" />
                       View on GitHub
                     </a>
@@ -208,11 +156,7 @@ const Index = () => {
       </section>
 
       {/* Contact Section */}
-      <section 
-        id="contact" 
-        className="snap-section flex items-center justify-center py-24 px-4"
-        aria-label="Contact"
-      >
+      <section id="contact" className="snap-section flex items-center justify-center py-24 px-4" aria-label="Contact">
         <div className="card w-full max-w-6xl bg-card text-card-foreground p-10 rounded-[var(--radius-lg)] shadow-2xl reveal">
           <h2 className="text-5xl font-bold text-primary mb-12 text-center">Get In Touch</h2>
           
@@ -227,12 +171,7 @@ const Index = () => {
                   <div>
                     <p className="text-sm text-primary/60">Email</p>
                     {/* REPLACE {EMAIL} with your actual email */}
-                    <a 
-                      href="mailto:your.email@example.com" 
-                      className="text-primary hover:underline"
-                    >
-                      your.email@example.com
-                    </a>
+                    <a href="mailto:your.email@example.com" className="text-primary hover:underline">rishiva2004@gmail.com</a>
                   </div>
                 </div>
 
@@ -241,12 +180,7 @@ const Index = () => {
                   <div>
                     <p className="text-sm text-primary/60">Phone</p>
                     {/* REPLACE {PHONE} with your actual phone number */}
-                    <a 
-                      href="tel:+1234567890" 
-                      className="text-primary hover:underline"
-                    >
-                      +1 (234) 567-890
-                    </a>
+                    <a href="tel:+1234567890" className="text-primary hover:underline">9940351596</a>
                   </div>
                 </div>
 
@@ -255,14 +189,7 @@ const Index = () => {
                   <div>
                     <p className="text-sm text-primary/60">LinkedIn</p>
                     {/* REPLACE {LINKEDIN_URL} with your actual LinkedIn profile */}
-                    <a 
-                      href="https://linkedin.com/in/yourprofile" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-primary hover:underline"
-                    >
-                      linkedin.com/in/yourprofile
-                    </a>
+                    <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">https://www.linkedin.com/in/rishivaradha07/</a>
                   </div>
                 </div>
               </div>
@@ -275,79 +202,36 @@ const Index = () => {
                   <label htmlFor="name" className="block text-sm font-medium text-primary mb-2">
                     Name *
                   </label>
-                  <Input
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="bg-background/5 border-primary/30 text-primary placeholder:text-primary/40"
-                    placeholder="Your name"
-                  />
+                  <Input id="name" name="name" value={formData.name} onChange={handleChange} required className="bg-background/5 border-primary/30 text-primary placeholder:text-primary/40" placeholder="Your name" />
                 </div>
 
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-primary mb-2">
                     Email *
                   </label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="bg-background/5 border-primary/30 text-primary placeholder:text-primary/40"
-                    placeholder="your.email@example.com"
-                  />
+                  <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required className="bg-background/5 border-primary/30 text-primary placeholder:text-primary/40" placeholder="your.email@example.com" />
                 </div>
 
                 <div>
                   <label htmlFor="subject" className="block text-sm font-medium text-primary mb-2">
                     Subject *
                   </label>
-                  <Input
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    className="bg-background/5 border-primary/30 text-primary placeholder:text-primary/40"
-                    placeholder="What's this about?"
-                  />
+                  <Input id="subject" name="subject" value={formData.subject} onChange={handleChange} required className="bg-background/5 border-primary/30 text-primary placeholder:text-primary/40" placeholder="What's this about?" />
                 </div>
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-primary mb-2">
                     Message *
                   </label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    rows={6}
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    className="bg-background/5 border-primary/30 text-primary placeholder:text-primary/40 resize-none"
-                    placeholder="Your message..."
-                  />
+                  <Textarea id="message" name="message" rows={6} value={formData.message} onChange={handleChange} required className="bg-background/5 border-primary/30 text-primary placeholder:text-primary/40 resize-none" placeholder="Your message..." />
                 </div>
 
                 {/* Honeypot field for spam prevention */}
-                <input
-                  type="text"
-                  name="honeypot"
-                  value={formData.honeypot}
-                  onChange={handleChange}
-                  style={{ display: "none" }}
-                  tabIndex={-1}
-                  autoComplete="off"
-                />
+                <input type="text" name="honeypot" value={formData.honeypot} onChange={handleChange} style={{
+                display: "none"
+              }} tabIndex={-1} autoComplete="off" />
 
-                <Button
-                  type="submit"
-                  className="w-full bg-primary text-card hover:bg-primary/90 transition-all duration-200 py-6 text-lg"
-                >
+                <Button type="submit" className="w-full bg-primary text-card hover:bg-primary/90 transition-all duration-200 py-6 text-lg">
                   Send Message
                 </Button>
               </form>
@@ -360,8 +244,6 @@ const Index = () => {
       <footer className="py-8 text-center text-foreground/60 text-sm">
         <p>© 2025 V A Rishivaradha. Designed with attention to detail.</p>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
