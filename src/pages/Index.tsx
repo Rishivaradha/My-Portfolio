@@ -4,6 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Github, Mail, Phone, Linkedin } from "lucide-react";
+import heroQuote from "@/assets/hero-quote.png";
+import messxPreview from "@/assets/messx-preview.png";
+import estorePreview from "@/assets/estore-preview.png";
 
 const Index = () => {
   const [formData, setFormData] = useState({
@@ -85,18 +88,11 @@ const Index = () => {
         aria-label="Hero section"
       >
         <div className="w-full max-w-5xl mx-auto px-8">
-          {/* Placeholder for Steve Jobs quote image - UPLOAD YOUR IMAGE HERE */}
-          <div className="hero-placeholder reveal relative aspect-video rounded-3xl border-4 border-dashed border-cream/30 bg-primary/20 backdrop-blur-sm flex items-center justify-center text-center p-8">
-            <div className="space-y-4">
-              <div className="text-6xl">📸</div>
-              <p className="text-xl font-light text-cream/80">
-                Upload Steve Jobs quote image here
-              </p>
-              <p className="text-sm text-cream/60">
-                (LCP placeholder - Replace with your hero image)
-              </p>
-            </div>
-          </div>
+          <img 
+            src={heroQuote} 
+            alt="Steve Jobs inspirational quote: Always keep the drive to learn, explore and achieve more" 
+            className="reveal relative aspect-video rounded-3xl w-full object-cover shadow-2xl"
+          />
         </div>
       </section>
 
@@ -139,13 +135,12 @@ const Index = () => {
           <div className="grid md:grid-cols-2 gap-8">
             {/* MessX Project */}
             <article className="card bg-card text-card-foreground rounded-[var(--radius-lg)] overflow-hidden shadow-2xl reveal transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
-              {/* UPLOAD MessX preview image here - recommended size: 1600x1000px */}
-              <div className="project-media aspect-[3/2] bg-primary/10 border-b-2 border-primary/20 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="text-4xl mb-2">🖼️</div>
-                  <p className="text-primary/60">Upload MessX preview image here</p>
-                  <p className="text-xs text-primary/40 mt-2">Recommended: 1600x1000px</p>
-                </div>
+              <div className="project-media aspect-[3/2] border-b-2 border-primary/20 overflow-hidden">
+                <img 
+                  src={messxPreview} 
+                  alt="MessX real-time chat application preview" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               
               <div className="p-8 space-y-4">
@@ -176,13 +171,12 @@ const Index = () => {
 
             {/* E-Store Project */}
             <article className="card bg-card text-card-foreground rounded-[var(--radius-lg)] overflow-hidden shadow-2xl reveal transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
-              {/* UPLOAD E-Store preview image here - recommended size: 1600x1000px */}
-              <div className="project-media aspect-[3/2] bg-primary/10 border-b-2 border-primary/20 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="text-4xl mb-2">🖼️</div>
-                  <p className="text-primary/60">Upload E-Store preview image here</p>
-                  <p className="text-xs text-primary/40 mt-2">Recommended: 1600x1000px</p>
-                </div>
+              <div className="project-media aspect-[3/2] border-b-2 border-primary/20 overflow-hidden">
+                <img 
+                  src={estorePreview} 
+                  alt="E-Store e-commerce platform preview" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               
               <div className="p-8 space-y-4">
